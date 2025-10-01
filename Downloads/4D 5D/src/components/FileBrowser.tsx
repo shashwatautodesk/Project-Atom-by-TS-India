@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ProjectFile, Folder, Project } from '../types'
+import { ProjectFile, Folder } from '../types'
 import { File, Folder as FolderIcon, Loader2, AlertCircle, FileBox, ArrowLeft } from 'lucide-react'
 import api from '../services/api'
 
