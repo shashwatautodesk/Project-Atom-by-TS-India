@@ -1,0 +1,26 @@
+WBS ID,Element Name,External ID,Start Date,End Date,Actual Start,Actual End,Status,Progress,Phase,Discipline,Contractor,Notes
+WBS-001,Basic Wall [620045],50f92000-82f8-4258-b6a8-bb42c01b00a0-0009760d,2025-09-15,2025-10-01,2025-09-15,2025-09-30,Completed,100,Foundation,Architectural,ABC Construction,Level 1 exterior walls - COMPLETED
+WBS-002,Structural Column [345221],a1b2c3d4-5678-90ab-cdef-1234567890ab,2025-09-20,2025-10-10,2025-09-20,,In Progress,75,Structure,Structural,XYZ Structural,Main building columns - ON SCHEDULE
+WBS-003,Floor [789456],e5f6g7h8-9012-34ij-klmn-5678901234op,2025-10-01,2025-10-15,2025-10-05,,Delayed,35,Structure,Structural,XYZ Structural,Level 2 floor slab - BEHIND SCHEDULE
+WBS-004,Basic Roof [123789],q9r8s7t6-u5v4-w3x2-y1z0-abcdefgh1234,2025-10-20,2025-11-05,,,Not Started,0,Envelope,Architectural,ABC Construction,Main roof structure
+WBS-005,Curtain Wall [456123],i8j7k6l5-m4n3-o2p1-q0r9-s8t7u6v5w4x3,2025-11-01,2025-11-20,,,Not Started,0,Envelope,Architectural,Glass & Glazing Co,Facade curtain wall system
+WBS-006,HVAC Duct [789321],y2z1a0b9-c8d7-e6f5-g4h3-i2j1k0l9m8n7,2025-11-05,2025-11-25,,,Not Started,0,MEP,Mechanical,Mechanical Services Inc,Main air distribution
+WBS-007,Electrical Panel [951753],o6p5q4r3-s2t1-u0v9-w8x7-y6z5a4b3c2d1,2025-11-10,2025-11-30,,,Not Started,0,MEP,Electrical,PowerTech Electric,Level 1 distribution panel
+WBS-008,Plumbing Fixtures [357159],e0f9g8h7-i6j5-k4l3-m2n1-o0p9q8r7s6t5,2025-11-15,2025-12-05,,,Not Started,0,MEP,Plumbing,Waterworks Plumbing,Bathroom fixtures
+WBS-009,Interior Partition [159357],u4v3w2x1-y0z9-a8b7-c6d5-e4f3g2h1i0j9,2025-12-01,2025-12-20,,,Not Started,0,Interior,Architectural,Interior Build Co,Office partition walls
+WBS-010,Door [753951],k8l7m6n5-o4p3-q2r1-s0t9-u8v7w6x5y4z3,2025-12-05,2025-12-22,,,Not Started,0,Interior,Architectural,Door & Hardware Inc,Entry doors and hardware
+WBS-011,Window [246810],a9b8c7d6-e5f4-g3h2-i1j0-k9l8m7n6o5p4,2025-10-15,2025-11-01,2025-10-15,,In Progress,50,Envelope,Architectural,Glass & Glazing Co,Building windows installation
+WBS-012,Stair [135791],q1w2e3r4-t5y6-u7i8-o9p0-a1s2d3f4g5h6,2025-09-25,2025-10-08,2025-09-25,2025-10-07,Completed,100,Structure,Structural,XYZ Structural,Main staircase - DONE
+WBS-013,Railing [975312],z9x8c7v6-b5n4-m3a2-s1d0-f9g8h7j6k5l4,2025-10-08,2025-10-18,2025-10-10,,Delayed,25,Structure,Architectural,Metal Works Inc,Stair railings - DELAYED
+WBS-014,Ceiling Grid [864209],p9o8i7u6-y5t4-r3e2-w1q0-a9s8d7f6g5h4,2025-11-20,2025-12-10,,,Not Started,0,Interior,Architectural,Ceiling Specialists,Suspended ceiling system
+WBS-015,Lighting Fixtures [753186],j9k8l7m6-n5b4-v3c2-x1z0-a9s8d7f6g5h4,2025-12-01,2025-12-18,,,Not Started,0,MEP,Electrical,PowerTech Electric,Interior lighting
+WBS-016,Floor Finish [951357],h9g8f7d6-s5a4-z3x2-c1v0-b9n8m7l6k5j4,2025-12-10,2025-12-28,,,Not Started,0,Interior,Architectural,Flooring Masters,Carpet and tile installation
+WBS-017,Paint [357951],t9r8e7w6-q5p4-o3i2-u1y0-t9r8e7w6q5p4,2025-12-15,2026-01-05,,,Not Started,0,Interior,Architectural,Painting Pros,Wall and ceiling painting
+WBS-018,HVAC Equipment [159753],a1s2d3f4-g5h6-j7k8-l9z0-x1c2v3b4n5m6,2025-11-25,2025-12-15,,,Not Started,0,MEP,Mechanical,Mechanical Services Inc,Rooftop units installation
+WBS-019,Fire Protection [753159],q1w2e3r4-t5y6-u7i8-o9p0-a1s2d3f4g5h6,2025-11-01,2025-11-22,2025-11-01,,In Progress,60,MEP,Fire Protection,Safety Systems Inc,Sprinkler system
+WBS-020,Elevator [951753],z1x2c3v4-b5n6-m7a8-s9d0-f1g2h3j4k5l6,2025-12-01,2026-01-10,,,Not Started,0,Vertical Transport,Elevator Specialists,Elevator Corp,Passenger elevator
+WBS-021,Foundation Wall,11111111-2222-3333-4444-555555555555,2025-09-01,2025-09-20,2025-09-01,2025-09-18,Completed,100,Foundation,Structural,Foundation Experts,Below grade foundation walls
+WBS-022,Slab on Grade,22222222-3333-4444-5555-666666666666,2025-09-18,2025-10-05,2025-09-18,2025-10-04,Completed,100,Foundation,Structural,Concrete Specialists,Ground floor slab
+WBS-023,Structural Steel,33333333-4444-5555-6666-777777777777,2025-10-05,2025-10-25,2025-10-08,,Delayed,40,Structure,Structural,Steel Erectors Inc,Main structural steel - DELAYED
+WBS-024,Roof Deck,44444444-5555-6666-7777-888888888888,2025-11-05,2025-11-18,,,Not Started,0,Envelope,Structural,Roofing Systems,Metal roof deck
+WBS-025,Roof Membrane,55555555-6666-7777-8888-999999999999,2025-11-18,2025-12-01,,,Not Started,0,Envelope,Roofing,Roofing Systems,Waterproof membrane
