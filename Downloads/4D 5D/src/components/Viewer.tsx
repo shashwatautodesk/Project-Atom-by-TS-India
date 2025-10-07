@@ -1286,7 +1286,7 @@ function Viewer({ file }: ViewerProps) {
       )}
 
       {/* Viewer Container */}
-      <div className="relative bg-white border-2 border-autodesk-gray-200 rounded-lg overflow-hidden shadow-lg" style={{ height: '70vh' }}>
+      <div className="relative bg-white border-2 border-autodesk-gray-200 rounded-lg overflow-hidden shadow-lg" style={{ height: '80vh', minHeight: '600px' }}>
 
         {/* Loading State */}
         {loading && (
