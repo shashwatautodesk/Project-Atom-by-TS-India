@@ -48,12 +48,43 @@ function FileBrowser({ projectId, hubId, onSelectFile }: FileBrowserProps) {
       const data = response.data || []
       const processedItems: Item[] = []
       
+      // ACC system folders to filter out (only show Project Files)
+      const accSystemFolders = [
+        'Photos',
+        'ProjectTb',
+        'correspondence-project',
+        'quantification_',
+        'meetings-project',
+        'issue_',
+        'submittals-attachments',
+        // Filter out folders with GUID-like patterns (ACC system folders)
+      ]
+      
+      const isAccSystemFolder = (name: string): boolean => {
+        // Check if it matches known ACC system folder patterns
+        if (accSystemFolders.some(pattern => name.toLowerCase().includes(pattern.toLowerCase()))) {
+          return true
+        }
+        // Filter out folders with GUID-like naming patterns (8-4-4-4-12 hex characters)
+        if (/^[a-f0-9]{8,}-[a-f0-9]{4,}-[a-f0-9]{4,}/i.test(name)) {
+          return true
+        }
+        return false
+      }
+      
       for (const item of data) {
         if (item.type === 'folders') {
           // It's a folder
+          const folderName = item.attributes?.displayName || item.attributes?.name || 'Unnamed Folder'
+          
+          // Filter out ACC system folders when at root level (no currentFolderId)
+          if (!currentFolderId && isAccSystemFolder(folderName)) {
+            continue // Skip this folder
+          }
+          
           processedItems.push({
             id: item.id,
-            name: item.attributes?.displayName || item.attributes?.name || 'Unnamed Folder',
+            name: folderName,
             type: 'folders',
             displayName: item.attributes?.displayName
           })
