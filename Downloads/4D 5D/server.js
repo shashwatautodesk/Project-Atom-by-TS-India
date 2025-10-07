@@ -14,7 +14,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+// Increase body size limit for large base64 images (screenshots can be 5-10MB)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // In-memory token cache (use Redis in production)
 let cachedToken = null;
@@ -677,7 +679,53 @@ app.post('/api/ai/render', async (req, res) => {
     console.log('Prompt:', prompt);
 
     // Convert base64 to buffer
-    const imageBuffer = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+    let imageBuffer = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+    
+    // Stability AI SDXL requires specific dimensions
+    // Allowed: 1024x1024, 1152x896, 1216x832, 1344x768, 1536x640, 640x1536, 768x1344, 832x1216, 896x1152
+    // We'll resize to 1344x768 (16:9 ratio, closest to common screenshot sizes)
+    const sharp = (await import('sharp')).default;
+    
+    // Get image metadata to check dimensions
+    const metadata = await sharp(imageBuffer).metadata();
+    console.log(`Original image dimensions: ${metadata.width}x${metadata.height}`);
+    
+    // Choose the best fitting allowed dimension based on aspect ratio
+    const aspectRatio = metadata.width / metadata.height;
+    const allowedDimensions = [
+      { width: 1024, height: 1024, ratio: 1.0 },
+      { width: 1152, height: 896, ratio: 1.286 },
+      { width: 1216, height: 832, ratio: 1.462 },
+      { width: 1344, height: 768, ratio: 1.75 },
+      { width: 1536, height: 640, ratio: 2.4 },
+      { width: 640, height: 1536, ratio: 0.417 },
+      { width: 768, height: 1344, ratio: 0.571 },
+      { width: 832, height: 1216, ratio: 0.684 },
+      { width: 896, height: 1152, ratio: 0.778 }
+    ];
+    
+    // Find the closest aspect ratio
+    let bestDimension = allowedDimensions[0];
+    let smallestDiff = Math.abs(aspectRatio - bestDimension.ratio);
+    
+    for (const dim of allowedDimensions) {
+      const diff = Math.abs(aspectRatio - dim.ratio);
+      if (diff < smallestDiff) {
+        smallestDiff = diff;
+        bestDimension = dim;
+      }
+    }
+    
+    console.log(`Resizing to ${bestDimension.width}x${bestDimension.height} (aspect ratio: ${bestDimension.ratio.toFixed(2)})`);
+    
+    // Resize the image
+    imageBuffer = await sharp(imageBuffer)
+      .resize(bestDimension.width, bestDimension.height, {
+        fit: 'cover',
+        position: 'center'
+      })
+      .png()
+      .toBuffer();
 
     // Create form data
     const FormData = (await import('form-data')).default;
@@ -696,6 +744,7 @@ app.post('/api/ai/render', async (req, res) => {
     formData.append('steps', '30');
 
     // Call Stability AI API
+    console.log('Calling Stability AI API...');
     const response = await axios.post(
       'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image',
       formData,
@@ -706,9 +755,34 @@ app.post('/api/ai/render', async (req, res) => {
           'Authorization': `Bearer ${process.env.STABILITY_API_KEY}`
         },
         maxContentLength: Infinity,
-        maxBodyLength: Infinity
+        maxBodyLength: Infinity,
+        timeout: 120000, // 2 minute timeout
+        validateStatus: function (status) {
+          return status < 500; // Don't throw on 4xx errors, handle them manually
+        }
       }
     );
+
+    console.log('Stability AI response status:', response.status);
+    
+    // Handle non-200 responses
+    if (response.status !== 200) {
+      console.error('Stability AI error response:', response.data);
+      let errorMsg = 'AI rendering failed';
+      
+      if (response.data.message) {
+        errorMsg = response.data.message;
+      } else if (response.data.name) {
+        errorMsg = `Error: ${response.data.name}`;
+      } else if (typeof response.data === 'string') {
+        errorMsg = response.data;
+      }
+      
+      return res.status(response.status).json({
+        success: false,
+        error: errorMsg
+      });
+    }
 
     if (response.data.artifacts && response.data.artifacts.length > 0) {
       const renderedImage = `data:image/png;base64,${response.data.artifacts[0].base64}`;
@@ -725,9 +799,88 @@ app.post('/api/ai/render', async (req, res) => {
 
   } catch (error) {
     console.error('AI rendering error:', error.response?.data || error.message);
-    res.status(500).json({
+    
+    let errorMessage = 'AI rendering failed. Please check your Stability AI API key and credits.';
+    let statusCode = 500;
+    
+    // Handle timeout errors
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      errorMessage = 'AI rendering timed out. The image might be too large or the service is slow. Please try again.';
+      statusCode = 504;
+    } else if (error.response?.data) {
+      statusCode = error.response.status || 500;
+      
+      // Stability AI error response
+      if (error.response.data.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.response.data.name === 'invalid_prompts') {
+        errorMessage = 'Invalid prompt. Please modify your prompt and try again.';
+      } else if (error.response.data.name === 'content_moderation') {
+        errorMessage = 'Content filtered. Please use a different prompt.';
+      } else if (error.response.data.name === 'unauthorized') {
+        errorMessage = 'Invalid or expired Stability AI API key. Please check your API key.';
+      } else if (typeof error.response.data === 'string') {
+        errorMessage = error.response.data;
+      } else if (typeof error.response.data === 'object') {
+        errorMessage = JSON.stringify(error.response.data);
+      }
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    
+    // Log full error for debugging
+    console.error('Full error details:', {
+      code: error.code,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      message: error.message
+    });
+    
+    // Ensure we ALWAYS return JSON
+    if (!res.headersSent) {
+      res.status(statusCode).json({
+        success: false,
+        error: errorMessage
+      });
+    }
+  }
+});
+
+/**
+ * GET /api/ai/test
+ * Test Stability AI API connection
+ */
+app.get('/api/ai/test', async (req, res) => {
+  try {
+    if (!process.env.STABILITY_API_KEY) {
+      return res.status(500).json({
+        success: false,
+        error: 'STABILITY_API_KEY not configured in .env file'
+      });
+    }
+
+    // Test API key by fetching account info
+    const response = await axios.get(
+      'https://api.stability.ai/v1/user/account',
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.STABILITY_API_KEY}`
+        }
+      }
+    );
+
+    res.json({
+      success: true,
+      message: 'Stability AI API key is valid',
+      credits: response.data
+    });
+  } catch (error) {
+    console.error('Stability AI test error:', error.response?.data || error.message);
+    res.status(error.response?.status || 500).json({
       success: false,
-      error: error.response?.data?.message || error.message || 'AI rendering failed. Please check your Stability AI API key and credits.'
+      error: error.response?.data?.message || 'Invalid Stability AI API key',
+      details: error.response?.data
     });
   }
 });
@@ -773,13 +926,18 @@ app.get('/', (req, res) => {
   });
 });
 
-// Error handler
+// Error handler - ensure all errors return JSON
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
-  res.status(500).json({ 
-    error: 'Internal server error',
-    message: err.message 
-  });
+  
+  // Ensure response is JSON
+  if (!res.headersSent) {
+    res.status(err.status || 500).json({ 
+      success: false,
+      error: 'Internal server error',
+      message: err.message 
+    });
+  }
 });
 
 app.listen(PORT, () => {

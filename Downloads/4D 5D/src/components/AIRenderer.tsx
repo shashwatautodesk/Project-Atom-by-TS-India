@@ -66,12 +66,31 @@ const AIRenderer: React.FC<AIRendererProps> = ({ onClose, onCapture }) => {
       clearInterval(progressInterval);
       setProgress(100);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'AI rendering failed');
+      // Parse response body first
+      let data;
+      const contentType = response.headers.get('content-type');
+      
+      if (contentType && contentType.includes('application/json')) {
+        try {
+          data = await response.json();
+        } catch (jsonError) {
+          console.error('JSON parse error:', jsonError);
+          throw new Error('Server returned invalid JSON response. Please check server logs.');
+        }
+      } else {
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        throw new Error('Server returned non-JSON response: ' + text.substring(0, 100));
       }
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || data.message || 'AI rendering failed');
+      }
+
+      if (!data.success || !data.renderedImage) {
+        throw new Error('AI rendering completed but no image was returned');
+      }
+
       setRenderedImage(data.renderedImage);
       setStep('result');
     } catch (err: any) {
