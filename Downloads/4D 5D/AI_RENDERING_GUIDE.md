@@ -334,7 +334,7 @@ Upcoming enhancements:
 For issues or questions:
 - **Technical Issues**: Check console logs (F12)
 - **API Problems**: Contact [Stability AI Support](https://platform.stability.ai/support)
-- **Feature Requests**: Contact shashwat.bahrdwaj@autodesk.com
+- **Feature Requests**: Contact shashwat.bhardwaj@autodesk.com
 
 ---
 
@@ -353,4 +353,7 @@ For issues or questions:
 **Happy Rendering! 🎨✨**
 
 Transform your 3D models into stunning photorealistic visualizations with the power of AI!
+
+
+
 

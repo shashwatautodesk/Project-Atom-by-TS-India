@@ -526,7 +526,7 @@ For questions or issues:
 - Check the element properties first
 - Verify filter syntax
 - Try simpler criteria
-- Contact: shashwat.bahrdwaj@autodesk.com
+- Contact: shashwat.bhardwaj@autodesk.com
 
 ---
 

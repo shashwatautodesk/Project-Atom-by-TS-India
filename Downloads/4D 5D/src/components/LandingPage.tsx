@@ -206,10 +206,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
             <p className="text-xs text-autodesk-gray-400 italic">
               Questions? Contact{' '}
               <a 
-                href="mailto:shashwat.bahrdwaj@autodesk.com" 
+                href="mailto:shashwat.bhardwaj@autodesk.com" 
                 className="text-hello-yellow hover:text-yellow-400 underline transition-colors"
               >
-                shashwat.bahrdwaj@autodesk.com
+                shashwat.bhardwaj@autodesk.com
               </a>
             </p>
           </div>

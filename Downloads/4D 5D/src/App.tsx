@@ -124,10 +124,10 @@ function App() {
             <p className="text-autodesk-gray-400 text-xs italic mb-3">
               For more details contact{' '}
               <a 
-                href="mailto:shashwat.bahrdwaj@autodesk.com" 
+                href="mailto:shashwat.bhardwaj@autodesk.com" 
                 className="text-hello-yellow hover:text-yellow-400 underline transition-colors"
               >
-                shashwat.bahrdwaj@autodesk.com
+                shashwat.bhardwaj@autodesk.com
               </a>
             </p>
             <p className="text-autodesk-gray-500 text-xs">

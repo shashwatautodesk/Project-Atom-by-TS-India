@@ -407,7 +407,7 @@
 **For questions or issues:**
 - Check the comprehensive guides
 - Review troubleshooting sections
-- Contact: shashwat.bahrdwaj@autodesk.com
+- Contact: shashwat.bhardwaj@autodesk.com
 
 **Resources:**
 - [APS Documentation](https://aps.autodesk.com/)
@@ -434,4 +434,7 @@
 **Built with ❤️ using cutting-edge web technologies and AI**
 
 **Transform your BIM workflow with Project Atom! ⚛️✨**
+
+
+
 

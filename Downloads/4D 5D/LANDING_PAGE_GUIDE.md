@@ -191,7 +191,7 @@ Hover:    [🚀] Launch Project Atom [→] ✨ (animated, larger, glowing)
 │            [🚀 Launch Project Atom →]                  │
 │         ● Ready to transform your BIM workflow          │
 │                                                         │
-│     Contact: shashwat.bahrdwaj@autodesk.com           │
+│     Contact: shashwat.bhardwaj@autodesk.com           │
 └─────────────────────────────────────────────────────────┘
 ```
 
