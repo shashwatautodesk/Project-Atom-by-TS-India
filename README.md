@@ -251,7 +251,7 @@ To make this application production-ready:
 For questions or issues:
 - Check the [APS Community](https://aps.autodesk.com/community)
 - Visit the [Autodesk Platform Services Help](https://aps.autodesk.com/en/support/)
-- Contact: shashwat.bahrdwaj@autodesk.com
+- Contact: shashwat.bhardwaj@autodesk.com
 
 ---
 
