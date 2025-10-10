@@ -173,26 +173,6 @@ Edit `src/components/FileBrowser.tsx` and add your file type to the `isViewableF
 const viewableTypes = ['rvt', 'rfa', 'dwg', 'dxf', 'ifc', 'nwd', 'nwc', 'pdf', 'fbx', 'obj', 'yourtype']
 ```
 
-## 🐛 Troubleshooting
-
-### Viewer Not Loading
-
-1. **Check console for errors** - Open browser DevTools (F12)
-2. **Verify Forge Viewer script** - Make sure it's loaded in `index.html`
-3. **Check access token** - Ensure your OAuth token is valid
-
-### Files Not Displaying
-
-1. **Check file URN** - Ensure the file URN is correctly formatted
-2. **Verify file translation** - Files must be translated by Forge before viewing
-3. **Check permissions** - Ensure your Forge app has access to the ACC project
-
-### CORS Issues
-
-If you encounter CORS errors:
-- Use a backend proxy server
-- Configure proper CORS headers on your backend
-- Don't call Autodesk APIs directly from the browser
 
 ## 🎨 AI Rendering Feature
 
